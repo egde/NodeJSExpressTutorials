@@ -1,5 +1,32 @@
 extends layout
 
 block content
-  h1= title
-  p Welcome to #{title}
+	h1 MyTodos
+	p Welcome to MyTodos
+
+	form(action='/todo/add', id='addTodoForm')
+		input(type='text', name='todo')
+		input(type='submit', value='Add')
+
+	script.
+		$("#addTodoForm").submit(function(event) {
+			/* avoid execution of standard submit*/
+			event.preventDefault();
+
+			var $form = $( this ),
+				term = $form.find( 'input[name="s"]' ).val(),
+				url = $form.attr( 'action' );
+
+			// Post the Data!
+			var posting = $.post( url, { s: term } );
+
+			// After post is done, place the result back into the result div
+			posting.done( function( data ) {
+				var content = $( data ).find( '#content' );
+				$( "#result" ).empty().append( content );
+			});
+
+			posting.fail( function ( data ) {
+				alert("There was an error!");
+				});
+		});

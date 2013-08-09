@@ -31,6 +31,12 @@ if ('development' == app.get('env')) {
 app.get('/', routes.index);
 app.get('/users', user.list);
 
+// Route could not be found!
+app.use( 
+	function(req, res, next){
+		res.send(500, 'Sorry, could not handle '+req)
+	});
+
 http.createServer(app).listen(app.get('port'), function(){
   console.log('Express server listening on port ' + app.get('port'));
 });
